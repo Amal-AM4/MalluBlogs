@@ -1,18 +1,37 @@
 <template>
   <div class="app-wrapper">
     <div class="app">
-      <Navigation />
+      <Navigation v-if="!navigation" />
 
       <router-view />
 
-      <Footer />
+      <Footer v-if="!navigation" />
     </div>
   </div>
 </template>
 
 <script setup>
+  import { useRoute } from 'vue-router';
   import Footer from './components/FooterBar.vue';
   import Navigation from './components/NavigationBar.vue';
+  import { computed, ref, watchEffect } from 'vue';
+
+  // reactive state
+  const navigation = ref(false)
+
+  const route = useRoute() // get the current route
+  const routeName = computed(() => route.name) // access route name
+
+  // fn to check route and update navigation
+  const checkRoute = () => {
+    const hiddenRoutes = ["Login", "Register", "ForgotPassword"]
+    navigation.value = hiddenRoutes.includes(routeName.value)
+  }
+
+  // watch route changes and update navigation dynamically
+  watchEffect(checkRoute)
+
+
 
 </script>
 
