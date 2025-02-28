@@ -21,10 +21,10 @@
         </div>
         <div class="col-2">
           <ul>
-            <li><router-link class="link" :to="{ name: '' }">Home</router-link></li>
-            <li><router-link class="link" :to="{ name: '' }">Blogs</router-link></li>
+            <li><router-link class="link" :to="{ name: 'Home' }">Home</router-link></li>
+            <li><router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link></li>
             <li><router-link class="link" :to="{ name: '' }">Create Post</router-link></li>
-            <li><router-link class="link" :to="{ name: '' }">Login / Register</router-link></li>
+            <li><router-link class="link" :to="{ name: 'Login' }">Login / Register</router-link></li>
           </ul>
         </div>
       </div>

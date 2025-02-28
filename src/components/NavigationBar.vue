@@ -9,7 +9,7 @@
           <li><router-link class="link" to="/">Home</router-link></li>
           <li><router-link class="link" to="/blogs">Blogs</router-link></li>
           <li><router-link class="link" to="#">Create Post</router-link></li>
-          <li><router-link class="link" to="#">Login/Register</router-link></li>
+          <li><router-link class="link" to="/login">Login/Register</router-link></li>
         </ul>
       </div>
     </nav>
@@ -19,7 +19,7 @@
         <li><router-link class="link" to="/">Home</router-link></li>
         <li><router-link class="link" to="/blogs">Blogs</router-link></li>
         <li><router-link class="link" to="#">Create Post</router-link></li>
-        <li><router-link class="link" to="#">Login/Register</router-link></li>
+        <li><router-link class="link" to="/login">Login/Register</router-link></li>
       </ul>
     </transition>
   </header>
