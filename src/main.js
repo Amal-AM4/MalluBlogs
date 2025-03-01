@@ -1,18 +1,18 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import { VueEditor } from "vue3-editor"
-import Toast  from "vue-toastification"
-import "vue-toastification/dist/index.css";
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
+import { VueEditor } from "vue3-editor";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-const app = createApp(App)
+const app = createApp(App);
 
-// register the VueEditor component globally (optional)
-app.component('VueEditor', VueEditor)
+app.component("VueEditor", VueEditor);
 
-app.use(Toast) // ✅ Initializes Toast
-app.use(router) // ✅ Initializes Vue Router
-app.use(store) // ✅ Initializes Vuex Store
-
-app.mount('#app') // ✅ Mounts the app to #app
+const auth = getAuth();
+onAuthStateChanged(auth,() => {
+  app.use(router);
+  app.use(store);
+  app.mount("#app");
+  console.log('main.js (first load)')
+});

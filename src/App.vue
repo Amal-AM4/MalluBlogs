@@ -16,6 +16,7 @@
   import Navigation from './components/NavigationBar.vue';
   import { computed, onMounted, ref, watchEffect } from 'vue';
   import { getAuth, onAuthStateChanged } from "firebase/auth";
+  import { useStore } from 'vuex';
 
   // reactive state
   const navigation = ref(false)
@@ -23,6 +24,7 @@
 
   const route = useRoute() // get the current route
   const routeName = computed(() => route.name) // access route name
+  const store = useStore()
 
   // fn to check route and update navigation
   const checkRoute = () => {
@@ -34,10 +36,13 @@
   onMounted(() => {
     // this code monitor where someone is login or not or changed the accound
     const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
+      store.commit("updateUser", user)
       if (user) {
         userUID.value = user.uid; // Store user UID
-        console.log("User UID App.vue:", user);
+        // console.log("User UID App.vue:", user);
+        await store.dispatch("getCurrentUser")
+        console.log("App.vue: ", store.state.profileEmail)
       } else {
         console.log("No user logged in.");
       }
