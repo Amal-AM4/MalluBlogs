@@ -5,11 +5,14 @@ import store from "./store";
 import { VueEditor } from "vue3-editor";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import "@/assets/css/style.css";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 const app = createApp(App);
 
 app.use(router);
 app.use(store);
+app.use(Toast);
 app.component("VueEditor", VueEditor);
 
 const auth = getAuth();

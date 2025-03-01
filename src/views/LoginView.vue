@@ -53,7 +53,7 @@
 
       console.log("User UID:", user.uid)
 
-      toast.success("Login successful!")
+      // toast.success("Login successful!")
       router.push('/')
 
     } catch (error) {
