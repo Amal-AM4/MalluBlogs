@@ -12,12 +12,12 @@
           <mail class="icon" />
         </div>
         <div class="input">
-          <input type="text" placeholder="Password" v-model="password">
+          <input type="password" placeholder="Password" v-model="password">
           <pwd class="icon" />
         </div>
       </div>
       <router-link class="forgot-password" to="/forgot-password">Forgot your password?</router-link>
-      <button>Sign In</button>
+      <button @click.prevent="signIn">Sign In</button>
       <div class="angle"></div>
     </form>
     <div class="background"></div>
@@ -29,8 +29,38 @@
   import mail from "../assets/Icons/envelope-regular.svg"
   import pwd from "../assets/Icons/lock-alt-solid.svg"
 
+  import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
+  import { useToast } from "vue-toastification";
+  import { useRouter } from "vue-router";
+
   const email = ref('')
   const password = ref('')
+
+  const toast = useToast()
+  const router = useRouter()
+
+  const signIn = async() => {
+    if (!email.value || !password.value) {
+      toast.error("Please fill in both fields!");
+      return;
+    }
+
+    try {
+      const auth = getAuth()
+      const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value)
+      const user = userCredential.user
+
+      console.log("User UID:", user.uid)
+
+      toast.success("Login successful!")
+      router.push('/')
+
+    } catch (error) {
+      console.error("Login error", error.message)
+      toast.error(error.message)
+    }
+  }
 
 </script>
 

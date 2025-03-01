@@ -14,10 +14,12 @@
   import { useRoute } from 'vue-router';
   import Footer from './components/FooterBar.vue';
   import Navigation from './components/NavigationBar.vue';
-  import { computed, ref, watchEffect } from 'vue';
+  import { computed, onMounted, ref, watchEffect } from 'vue';
+  import { getAuth, onAuthStateChanged } from "firebase/auth";
 
   // reactive state
   const navigation = ref(false)
+  const userUID = ref(null); // Store user UID
 
   const route = useRoute() // get the current route
   const routeName = computed(() => route.name) // access route name
@@ -28,10 +30,21 @@
     navigation.value = hiddenRoutes.includes(routeName.value)
   }
 
+  // Get current user on mount
+  onMounted(() => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        userUID.value = user.uid; // Store user UID
+        console.log("User UID App.vue:", user);
+      } else {
+        console.log("No user logged in.");
+      }
+    });
+  });
+
   // watch route changes and update navigation dynamically
   watchEffect(checkRoute)
-
-
 
 </script>
 
