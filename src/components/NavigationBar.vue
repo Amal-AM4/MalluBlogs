@@ -68,6 +68,12 @@
   const store = useStore()
   const router = useRouter()
 
+  const profileInitials = computed(() => store.state.profileInitials);
+  const profileFirstName = computed(() => store.state.profileFirstName);
+  const profileLastName = computed(() => store.state.profileLastName);
+  const profileUsername = computed(() => store.state.profileUsername);
+  const profileEmail = computed(() => store.state.profileEmail);
+
   const profileMenu = ref(false)
   const profile = ref(null) // replaces this.$refs.profile
 

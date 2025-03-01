@@ -8,12 +8,17 @@ import "@/assets/css/style.css";
 
 const app = createApp(App);
 
+app.use(router);
+app.use(store);
 app.component("VueEditor", VueEditor);
 
 const auth = getAuth();
-onAuthStateChanged(auth,() => {
-  app.use(router);
-  app.use(store);
-  app.mount("#app");
-  console.log('main.js (first load)')
+
+onAuthStateChanged(auth, () => {
+  // Only mount the app once
+  if (!app._mounted) {
+    app.mount("#app");
+    app._mounted = true; // Prevents multiple mounts
+    console.log("Vue app mounted successfully!");
+  }
 });
