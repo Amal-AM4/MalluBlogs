@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store";
 import { VueEditor } from "vue3-editor";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import "@/assets/css/style.css";
 
 const app = createApp(App);
 
