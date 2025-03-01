@@ -11,9 +11,9 @@
           <li><router-link class="link" to="#">Create Post</router-link></li>
           <li><router-link class="link" to="/login">Login/Register</router-link></li>
         </ul>
-        <div class="profile" ref="profile">
+        <div v-if="user" @click="toggleProfileMenu" class="profile" ref="profile">
           <span>{{ this.$store.state.profileInitials }}</span>
-          <div class="profile-menu">
+          <div v-show="profileMenu" class="profile-menu">
             <div class="info">
               <p class="initials">{{ this.$store.state.profileInitials }}</p>
               <div class="right">
@@ -32,10 +32,10 @@
                   <adminIcon class="icon" />
                   <p>Admin</p>
                 </router-link>
-                <router-link class="router-link" to="#">
+                <div @click="logOut" class="router-link">
                   <signOutIcon class="icon" />
                   <p>Sign Out</p>
-                </router-link>
+                </div>
               </div>
             </div>
           </div>
@@ -55,11 +55,21 @@
 </template>
 
 <script setup>
-  import { onMounted, onUnmounted, ref } from 'vue'
+  import { computed, onMounted, onUnmounted, ref } from 'vue'
   import menuIcon  from '../assets/Icons/bars-regular.svg'
   import userIcon  from '../assets/Icons/user-alt-light.svg'
   import adminIcon  from '../assets/Icons/user-crown-light.svg'
   import signOutIcon  from '../assets/Icons/sign-out-alt-regular.svg'
+  import { getAuth, signOut } from 'firebase/auth'
+  import { useStore } from 'vuex'
+  import { useRouter } from 'vue-router'
+
+
+  const store = useStore()
+  const router = useRouter()
+
+  const profileMenu = ref(false)
+  const profile = ref(null) // replaces this.$refs.profile
 
   const mobile = ref(false)
   const mobileNav = ref(false)
@@ -74,6 +84,32 @@
       mobileNav.value = false;
     }
   };
+
+  const toggleProfileMenu = (e) => {
+    if (e.target === profile.value) {
+      profileMenu.value = !profileMenu.value
+    }
+  }
+
+  // signout
+  const logOut = async () => {
+    try {
+      const auth = getAuth()
+      await signOut(auth)
+
+      // clear user state in vuex
+      // store.commit("updateUser", null)
+
+      console.log("User signed out successfully.")
+
+      // redirect to homepage or login
+      router.push('/')
+    } catch (error) {
+      console.error("Error signing out:", error.message);
+    }
+  }
+
+  const user = computed(() => store.state.user)
 
   // Toggle Mobile Navigation
   const toggleMobileNav = () => {
@@ -157,6 +193,10 @@
         border-radius: 50%;
         color: #fff;
         background-color: #303030;
+
+        span {
+          pointer-events: none;
+        }
 
         .profile-menu {
           position: absolute;
