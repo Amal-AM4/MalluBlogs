@@ -29,7 +29,7 @@ const store = createStore({
     updateUser(state, payload) {
       state.user = payload
     },
-    setProfileInfo(state, doc) {
+    setProfileInfo(state, doc) { // doc contains the docSnap.data()
       state.profileId = doc.id
       state.profileEmail = doc.data().email
       state.profileFirstName = doc.data().firstName
