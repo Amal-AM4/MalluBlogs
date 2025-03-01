@@ -10,6 +10,10 @@
 <script setup>
   import { defineEmits } from 'vue';
 
+  defineProps({
+    modalMessage: String // Define the prop correctly
+  });
+
   const emit = defineEmits(['close-modal',]) // define event name
 
   const closeModal = () => {

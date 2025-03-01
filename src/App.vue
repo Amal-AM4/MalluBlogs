@@ -32,6 +32,7 @@
 
   // Get current user on mount
   onMounted(() => {
+    // this code monitor where someone is login or not or changed the accound
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
