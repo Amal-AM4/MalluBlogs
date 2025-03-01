@@ -12,14 +12,14 @@
           <li><router-link class="link" to="/login">Login/Register</router-link></li>
         </ul>
         <div v-if="user" @click="toggleProfileMenu" class="profile" ref="profile">
-          <span>{{ this.$store.state.profileInitials }}</span>
+          <span>{{ profileInitials }}</span>
           <div v-show="profileMenu" class="profile-menu">
             <div class="info">
-              <p class="initials">{{ this.$store.state.profileInitials }}</p>
+              <p class="initials">{{ profileInitials }}</p>
               <div class="right">
-                <p>{{ this.$store.state.profileFirstName }} {{ this.$store.state.profileLastName }}</p>
-                <p>{{ this.$store.state.profileUsername }}</p>
-                <p>{{ this.$store.state.profileEmail }}</p>
+                <p>{{ profileFirstName }} {{ profileLastName }}</p>
+                <p>{{ profileUsername }}</p>
+                <p>{{ profileEmail }}</p>
               </div>
             </div>
             <div class="options">
