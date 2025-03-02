@@ -10,16 +10,18 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
+    "@vueup/vue-quill": "^1.2.0",
     "core-js": "^3.40.0",
     "dotenv": "^16.4.7",
     "firebase": "^11.3.1",
-    "quill": "^2.0.3",
     "quill-image-resize-module": "^3.0.0",
+    "quill-image-resize-module-ts": "^3.0.3",
     "vite-svg-loader": "^5.1.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0",
     "vue-toastification": "^2.0.0-rc.5",
     "vue3-editor": "^0.1.1",
+    "vue3-quill": "^0.3.1",
     "vuex": "^4.1.0"
   },
   "devDependencies": {

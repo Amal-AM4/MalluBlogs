@@ -7,6 +7,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import "@/assets/css/style.css";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import { QuillEditor } from "@vueup/vue-quill";
+import "@vueup/vue-quill/dist/vue-quill.snow.css"; // Default theme
 
 const app = createApp(App);
 
@@ -14,6 +16,7 @@ app.use(router);
 app.use(store);
 app.use(Toast);
 app.component("VueEditor", VueEditor);
+app.component("QuillEditor", QuillEditor);
 
 const auth = getAuth();
 
