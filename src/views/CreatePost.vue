@@ -28,33 +28,15 @@
 
 <script setup>
 import Quill from "quill";
-import { computed, ref, onMounted } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import { VueEditor } from "vue3-editor";
 
-// Register Quill globally (if needed)
 window.Quill = Quill;
-
-// Dynamically import the module inside `onMounted`
-onMounted(async () => {
-  try {
-    const ImageResize = (await import("quill-image-resize-module")).default;
-    window.Quill.register("modules/imageResize", ImageResize);
-  } catch (error) {
-    console.error("Error loading imageResize module:", error);
-  }
-});
 
 // Quill editor settings
 const editorSettings = ref({
   modules: {
-    toolbar: [
-      ["bold", "italic", "underline"], // Basic text formatting
-      [{ header: [1, 2, 3, false] }], // Headers
-      [{ list: "ordered" }, { list: "bullet" }], // Lists
-      [{ align: [] }], // Text alignment
-      ["image"], // Image upload
-    ],
     // imageResize: {},
   },
 });
@@ -65,8 +47,6 @@ const store = useStore();
 const error = ref(false);
 const errorMsg = ref("");
 const blogPhoto = ref(null);
-
-// const blogHTML = ""
 
 const profileId = computed(() => store.state.profileId);
 const blogPhotoFileURL = computed(() => store.state.blogPhotoFileURL || "");
@@ -85,8 +65,6 @@ const blogHTML = computed({
     store.commit("newBlogPost", payload);
   },
 });
-
-
 
 </script>
 
