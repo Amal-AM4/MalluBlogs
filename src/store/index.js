@@ -1,6 +1,6 @@
 import db from '@/firebase/firebaseInit';
 import { getAuth } from 'firebase/auth';
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
 import { createStore } from 'vuex';
 
 const store = createStore({
@@ -43,6 +43,15 @@ const store = createStore({
       const last = state.profileLastName ? state.profileLastName[0] : "";
       state.profileInitials = (first + last).toUpperCase();
     },
+    changeFirstName(state, payload) {
+      state.profileFirstName = payload
+    },
+    changeLastName(state, payload) {
+      state.profileLastName = payload
+    },
+    changeUserName(state, payload) {
+      state.profileUsername = payload
+    },
 
   },
   actions: {
@@ -70,6 +79,22 @@ const store = createStore({
         return null
       }
     },
+    async updateUserSettings({ commit, state }) {
+      const db = getFirestore()
+      const userRef = doc(db, "users", state.profileId)
+
+      try {
+        await updateDoc(userRef, {
+          firstName: state.profileFirstName,
+          lastName: state.profileLastName,
+          username: state.profileUsername,
+        })
+        commit("setProfileInitials")
+      } catch (error) {
+        console.error(error.message);
+      }
+    }
+
   },
   modules: {
     // Your modules here

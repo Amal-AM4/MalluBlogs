@@ -24,7 +24,7 @@
             <li><router-link class="link" :to="{ name: 'Home' }">Home</router-link></li>
             <li><router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link></li>
             <li><router-link class="link" :to="{ name: '' }">Create Post</router-link></li>
-            <li><router-link class="link" :to="{ name: 'Login' }">Login / Register</router-link></li>
+            <li><router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login / Register</router-link></li>
           </ul>
         </div>
       </div>
@@ -40,7 +40,11 @@
   import twitter  from '../assets/Icons/twitter-brands.svg'
   import instagram  from '../assets/Icons/instagram-brands.svg'
   import linkedin  from '../assets/Icons/linkedin-brands.svg'
+  import { useStore } from 'vuex'
+  import { computed } from 'vue'
 
+  const store = useStore()
+  const user = computed(() => store.state.user)
 
 </script>
 

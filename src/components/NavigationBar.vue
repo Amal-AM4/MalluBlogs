@@ -9,7 +9,7 @@
           <li><router-link class="link" to="/">Home</router-link></li>
           <li><router-link class="link" to="/blogs">Blogs</router-link></li>
           <li><router-link class="link" to="#">Create Post</router-link></li>
-          <li><router-link class="link" to="/login">Login/Register</router-link></li>
+          <li><router-link v-if="!user" class="link" to="/login">Login/Register</router-link></li>
         </ul>
         <div v-if="user" @click="toggleProfileMenu" class="profile" ref="profile">
           <span>{{ profileInitials }}</span>
@@ -24,11 +24,11 @@
             </div>
             <div class="options">
               <div class="option">
-                <router-link class="router-link" to="#">
+                <router-link class="router-link" to="/profile">
                   <userIcon class="icon" />
                   <p>Profile</p>
                 </router-link>
-                <router-link class="router-link" to="#">
+                <router-link class="router-link" to="/admin">
                   <adminIcon class="icon" />
                   <p>Admin</p>
                 </router-link>
@@ -48,7 +48,7 @@
         <li><router-link class="link" to="/">Home</router-link></li>
         <li><router-link class="link" to="/blogs">Blogs</router-link></li>
         <li><router-link class="link" to="#">Create Post</router-link></li>
-        <li><router-link class="link" to="/login">Login/Register</router-link></li>
+        <li><router-link v-if="!user" class="link" to="/login">Login/Register</router-link></li>
       </ul>
     </transition>
   </header>

@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <BlogPost :post="welcomeScreen" />
+    <BlogPost v-if="!user" :post="welcomeScreen" />
     <BlogPost :post="post" v-for="(post, index) in sampleBlogPost" :key="index" />
     <div class="blog-card-wrap">
       <div class="container">
@@ -10,10 +10,10 @@
         </div>
       </div>
     </div>
-    <div class="updates">
+    <div v-if="!user" class="updates">
       <div class="container">
         <h2>Never miss a post. Resgister for your free account today!</h2>
-        <router-link class="router-button" to="#">
+        <router-link class="router-button" to="/register">
           Register for MalluBlogs <Arrow class="arrow arrow-light" />
         </router-link>
       </div>
@@ -33,6 +33,7 @@
   const store = useStore();
 
   // Access vuex state
+  const user = computed(() => store.state.user)
   const sampleBlogCards = computed(() => store.state.sampleBlogCards)
 
   const welcomeScreen = ref({
