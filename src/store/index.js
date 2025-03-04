@@ -27,9 +27,9 @@ const store = createStore({
   },
   mutations: {
     newBlogPost(state, payload) {
-      console.log("Mutation triggered with:", payload);
+      // console.log("Mutation triggered with:", payload);
       state.blogHTML = payload
-      console.log(state.blogHTML)
+      // console.log(state.blogHTML)
     },
     updateBlogTitle(state, payload) {
       state.blogTitle = payload

@@ -1,12 +1,14 @@
 <template>
   <div class="create-post">
-    <BlogCoverPreview v-show="blogPhotoPreview" />
+    <BlogCoverPreview v-show="blogPhotoPreview" :previewURL="blogPhotoFileURL" />
     <div class="container">
       <div :class="{ invisible: !error }" class="err-message">
         <p><span>Error:</span>{{ errorMsg }}</p>
       </div>
       <div class="blog-info">
         <input type="text" placeholder="Enter Blog Title" v-model="blogTitle">
+
+        <!-- Upload Image -->
         <div class="upload-file">
           <label for="blog-photo">Upload Cover Photo</label>
           <input type="file" ref="blogPhoto" id="blog-photo" @change="fileChange" accept=".png, .jpg, .jpeg">
@@ -16,13 +18,14 @@
           <span>File Chosen: {{ blogPhotoName }}</span>
         </div>
       </div>
+
+      <!-- Rich Text Editor -->
       <div class="editor">
-        <vue-editor v-model="blogHTML" useCustomImageHandler :editorOptions="editorSettings" />
-        <!-- OR USE QuillEditor -->
-        <!-- <QuillEditor v-model:content="blogHTML" contentType="html" /> -->
+        <vue-editor v-model="blogHTML" :editorOptions="editorSettings" />
       </div>
+
       <div class="blog-actions">
-        <button>Publish Blog</button>
+        <button @click="publishBlog">Publish Blog</button>
         <router-link to="#" class="router-button">Post Preview</router-link>
       </div>
     </div>
@@ -30,32 +33,37 @@
 </template>
 
 <script setup>
-import Quill from "quill";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { VueEditor } from "vue3-editor";
 import BlogCoverPreview from "@/components/BlogCoverPreview.vue";
 
-window.Quill = Quill;
-
 // Quill editor settings
 const editorSettings = ref({
   modules: {
-    // imageResize: {},
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],  // Headings
+      ["bold", "italic", "underline", "strike"],  // Basic text formatting
+      [{ list: "ordered" }, { list: "bullet" }],  // Lists
+      [{ script: "sub" }, { script: "super" }],  // Subscript/Superscript
+      [{ indent: "-1" }, { indent: "+1" }],  // Indentation
+      [{ align: [] }],  // Alignment options
+      ["blockquote", "code-block"],  // Block elements
+      [{ color: [] }, { background: [] }],  // Text and background colors
+      [{ font: [] }],  // Font styles
+      [{ size: ["small", false, "large", "huge"] }],  // Font sizes
+      ["clean"],  // Remove formatting
+    ],
   },
 });
 
-const store = useStore();
 
-// Reactive states
+const store = useStore();
 const error = ref(false);
 const errorMsg = ref("");
 const blogPhoto = ref(null);
 
-// const file = ref(null);
-
 const blogPhotoPreview = computed(() => store.state.blogPhotoPreview);
-const profileId = computed(() => store.state.profileId);
 const blogPhotoFileURL = computed(() => store.state.blogPhotoFileURL || "");
 const blogPhotoName = computed(() => store.state.blogPhotoName);
 
@@ -64,34 +72,53 @@ const blogTitle = computed({
   set: (payload) => store.commit('updateBlogTitle', payload)
 });
 const blogHTML = computed({
-  get() {
-    console.log(store.state.blogHTML)
-    return store.state.blogHTML;
-  },
-  set(payload) {
-    store.commit("newBlogPost", payload);
-  },
+  get: () => store.state.blogHTML,
+  set: (payload) => store.commit("newBlogPost", payload),
 });
 
+// **Handle File Selection**
 const fileChange = () => {
   if (blogPhoto.value && blogPhoto.value.files.length > 0) {
-    const selectedFile = blogPhoto.value.files[0]; // Get the selected file
-    const fileName = selectedFile.name;
+    const file = blogPhoto.value.files[0]; // Get selected file
+    const fileName = file.name;
 
-    // Commit to Vuex store
-    store.commit("fileNameChange", fileName);
-    store.commit("createFileURL", URL.createObjectURL(selectedFile));
+    // Convert file to Data URL (for preview)
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      store.commit("fileNameChange", fileName);
+      store.commit("createFileURL", reader.result); // Save base64 URL
+      localStorage.setItem("blogImage", reader.result); // Save locally
+    };
   } else {
     console.error("No file selected.");
   }
 };
 
+// **Load Saved Image from localStorage**
+const loadSavedImage = () => {
+  const savedImage = localStorage.getItem("blogImage");
+  if (savedImage) {
+    store.commit("createFileURL", savedImage);
+  }
+};
+
+// **Open Image Preview**
 const openPreview = () => {
-  store.commit('openPhotoPreview')
-}
+  store.commit("openPhotoPreview");
+};
 
+// **Publish Blog**
+const publishBlog = () => {
+  console.log("Blog Title:", blogTitle.value);
+  console.log("Blog Content:", blogHTML.value);
+  console.log("Blog Cover Image:", blogPhotoFileURL.value);
+};
 
+// **Load Image on Component Mount**
+loadSavedImage();
 </script>
+
 
 <style lang="scss">
 .create-post {
