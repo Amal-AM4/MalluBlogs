@@ -34,6 +34,12 @@ const store = createStore({
     updateBlogTitle(state, payload) {
       state.blogTitle = payload
     },
+    fileNameChange(state, payload) {
+      state.blogPhotoName = payload
+    },
+    createFileURL(state, payload) {
+      state.blogPhotoFileURL = payload
+    },
     toggleEditPost(state, payload) {
       state.editPost = payload
     },

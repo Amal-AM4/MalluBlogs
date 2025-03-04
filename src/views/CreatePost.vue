@@ -8,7 +8,7 @@
         <input type="text" placeholder="Enter Blog Title" v-model="blogTitle">
         <div class="upload-file">
           <label for="blog-photo">Upload Cover Photo</label>
-          <input type="file" ref="blogPhoto" id="blog-photo" accept=".png, .jpg, .jpeg">
+          <input type="file" ref="blogPhoto" id="blog-photo" @change="fileChange" accept=".png, .jpg, .jpeg">
           <button class="preview" :class="{ 'button-inactive': !blogPhotoFileURL }">Preview Photo</button>
           <span>File Chosen: {{ blogPhotoName }}</span>
         </div>
@@ -48,6 +48,8 @@ const error = ref(false);
 const errorMsg = ref("");
 const blogPhoto = ref(null);
 
+const file = ref(null);
+
 const profileId = computed(() => store.state.profileId);
 const blogPhotoFileURL = computed(() => store.state.blogPhotoFileURL || "");
 const blogPhotoName = computed(() => store.state.blogPhotoName);
@@ -65,6 +67,20 @@ const blogHTML = computed({
     store.commit("newBlogPost", payload);
   },
 });
+
+const fileChange = () => {
+  if (blogPhoto.value && blogPhoto.value.files.length > 0) {
+    const selectedFile = blogPhoto.value.files[0]; // Get the selected file
+    const fileName = selectedFile.name;
+
+    // Commit to Vuex store
+    store.commit("fileNameChange", fileName);
+    store.commit("createFileURL", URL.createObjectURL(selectedFile));
+  } else {
+    console.error("No file selected.");
+  }
+};
+
 
 </script>
 
