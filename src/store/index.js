@@ -15,7 +15,7 @@ const store = createStore({
     blogTitle: "",
     blogPhotoName: "",
     blogPhotoFileURL: null,
-    blogPhotoPreview: null,
+    blogPhotoPreview: false,
     editPost: null,
     user: null,
     profileEmail: null,
@@ -39,6 +39,9 @@ const store = createStore({
     },
     createFileURL(state, payload) {
       state.blogPhotoFileURL = payload
+    },
+    openPhotoPreview(state) {
+      state.blogPhotoPreview = !state.blogPhotoPreview
     },
     toggleEditPost(state, payload) {
       state.editPost = payload

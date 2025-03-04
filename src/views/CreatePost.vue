@@ -1,5 +1,6 @@
 <template>
   <div class="create-post">
+    <BlogCoverPreview v-show="blogPhotoPreview" />
     <div class="container">
       <div :class="{ invisible: !error }" class="err-message">
         <p><span>Error:</span>{{ errorMsg }}</p>
@@ -9,7 +10,9 @@
         <div class="upload-file">
           <label for="blog-photo">Upload Cover Photo</label>
           <input type="file" ref="blogPhoto" id="blog-photo" @change="fileChange" accept=".png, .jpg, .jpeg">
-          <button class="preview" :class="{ 'button-inactive': !blogPhotoFileURL }">Preview Photo</button>
+          <button @click="openPreview" class="preview" :class="{ 'button-inactive': !blogPhotoFileURL }">
+            Preview Photo
+          </button>
           <span>File Chosen: {{ blogPhotoName }}</span>
         </div>
       </div>
@@ -31,6 +34,7 @@ import Quill from "quill";
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import { VueEditor } from "vue3-editor";
+import BlogCoverPreview from "@/components/BlogCoverPreview.vue";
 
 window.Quill = Quill;
 
@@ -48,8 +52,9 @@ const error = ref(false);
 const errorMsg = ref("");
 const blogPhoto = ref(null);
 
-const file = ref(null);
+// const file = ref(null);
 
+const blogPhotoPreview = computed(() => store.state.blogPhotoPreview);
 const profileId = computed(() => store.state.profileId);
 const blogPhotoFileURL = computed(() => store.state.blogPhotoFileURL || "");
 const blogPhotoName = computed(() => store.state.blogPhotoName);
@@ -80,6 +85,10 @@ const fileChange = () => {
     console.error("No file selected.");
   }
 };
+
+const openPreview = () => {
+  store.commit('openPhotoPreview')
+}
 
 
 </script>
